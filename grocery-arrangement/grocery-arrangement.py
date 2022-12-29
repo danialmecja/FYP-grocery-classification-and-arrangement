@@ -128,7 +128,7 @@ def visualise_arrangement(bins):
 
 def main():
     # import grocerylist
-    os.chdir(r'C:\Users\OWNER\PythonProjects\FYP1\FYP2')
+    os.chdir(r'/home/mustar/mad_fyp/FYP-grocery-classification-and-arrangement/grocery-arrangement')
     with open('grocerylist.txt') as file:
         lines = file.readlines()
 
@@ -190,6 +190,7 @@ def main():
     num_bins = [len(packaged_food_bin), len(snack_food_bin),len(drinks_bin)]
     print(num_bins)
     visualise_arrangement(num_bins)
+    
 
 
 
