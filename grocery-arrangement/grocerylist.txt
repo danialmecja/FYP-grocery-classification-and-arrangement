@@ -14,3 +14,13 @@ water:26:24:30
 nuts:25:14:30
 chips:25:4:31
 sugar:27:20:31
+rice:27:17:32
+coffee:27:6:31
+juice:26:12:31
+water:26:24:30
+beans:27:0:31
+rice:27:17:32
+coffee:27:6:31
+juice:26:12:31
+water:26:24:30
+nuts:25:14:30

@@ -89,41 +89,74 @@ def sort_code(grocery):
     return grocery.code
 
 def visualise_arrangement(bins):
+    
+    num_bins = []
+    for bin in bins:
+        num_bins.append(len(bin))
+        
     fig = plt.figure() 
     ax = fig.add_subplot(111) 
     
-    layout_height = 10
+    layout_height = 8
     layout_width = 10
 
     ax.set_xlim([0, layout_width])
     ax.set_ylim([0, layout_height])
 
 
-    #shelf boundary
-    ax.axhline(y=4,color='black')
     colors = ['red', 'green', 'blue']
-
-
     x = 0 # initialise to arrange from left
-    for bin in range(len(bins)):
-        y=2 # always arrange from top (inside of shelf)
-        for i in range(bins[bin]):
-            if i == 0:
+    for num in range(len(num_bins)):
+        y=4 # always arrange from top (inside of shelf)
+        for i in range(num_bins[num]):
+            if i == 0: # first pass
                 pass
             elif i%2 == 0:
-                x+=4
-                y=2
+                x+=2
+                y=4
             else:
-                y=0
+                y=2
+
+            # print category bins
+            print("bin:", num_bins[num], "i:", i, "x,y: ", x ,y)
+            ax.add_patch(Rectangle((x,y),2,2,edgecolor ='black',facecolor=colors[num]))
+            
+            # print items in category
+            for j,grocery_item in enumerate(bins[num][i].grocery):
+                if j%4 == 0:
+                    X = x+0.2
+                    Y = y+1.5
+                elif j%4 == 1:
+                    X = x+1.2
+                    Y = y+1.5
+                elif j%4 == 2:
+                    X = x+0.2
+                    Y = y+0.5
+                else:
+                    X = x+1.2
+                    Y = y+0.5
+                    
+                ax.text(X, Y, grocery_item, fontsize = 10)
         
-            print(bin)
-            print("bin:", bins[bin], "i:", i, "x,y: ", x ,y)
-            ax.add_patch(Rectangle((x,y),2,2,edgecolor ='black',facecolor=colors[bin]))
-            
-            
         #reset new row for new category
         x += 2
-    #ax.autoscale(enable=True) 
+    
+
+    # Add title  and legend
+    plt.title("Top view of shelf arrangement")
+    leg = ax.legend (['Packaged Food', 'Snack Food', 'Drinks'])
+    leg.legendHandles[0].set_color('red')
+    leg.legendHandles[1].set_color('green')
+    leg.legendHandles[2].set_color('blue')
+
+    # Add shelf boundary
+    ax.axhline(y=6,color='black')
+    ax.axhline(y=2,color='black')
+    ax.text(4, 7, 'back of shelf', style='italic',
+        bbox={'facecolor': 'None', 'alpha': 0.5, 'pad': 10})
+    ax.text(4, 1, 'front of shelf', style='italic',
+        bbox={'facecolor': 'None', 'alpha': 0.5, 'pad': 10})
+
     plt.show()
 
 def main():
@@ -153,7 +186,7 @@ def main():
 
     # sort same items together
     packaged_food = sorted(packaged_food,key=sort_code)
-    print ("Items in packaged_food: ")
+    #print ("Items in packaged_food: ")
     #for items in packaged_food:
     #    print(items.name)
     snack_food = sorted(snack_food,key=sort_code)
@@ -187,12 +220,10 @@ def main():
 
 
     # output how many bins and grocery arrangement
-    num_bins = [len(packaged_food_bin), len(snack_food_bin),len(drinks_bin)]
-    print(num_bins)
-    visualise_arrangement(num_bins)
+    total_bins = [packaged_food_bin, snack_food_bin,drinks_bin]
+    #print(total_bins)
+    visualise_arrangement(total_bins)
     
-
-
 
 if __name__=="__main__":
     main()
