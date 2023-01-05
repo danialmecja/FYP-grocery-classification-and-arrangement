@@ -20,7 +20,7 @@ def midpoint(ptA, ptB):
 
 # load the image, convert it to grayscale, and blur it slightly
 #image = cv2.imread(args["image"]) #read reference image
-image = cv2.imread('FYP-grocery-classification-and-arrangement/grocery-size-estimation/imagefiles/referenceimage.jpg')
+image = cv2.imread('FYP-grocery-classification-and-arrangement/grocery-size-estimation/imagefiles/sample6.jpg')
 gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 gray = cv2.GaussianBlur(gray, (7, 7), 0)
 cv2.imshow("Gray",gray)
@@ -47,7 +47,7 @@ pixelsPerMetric = None
 # loop over the contours individually
 for c in cnts:
 	# if the contour is not sufficiently large, ignore it
-	if cv2.contourArea(c) < 100:
+	if cv2.contourArea(c) < 1000:
 		continue
 
 	# compute the rotated bounding box of the contour
