@@ -1,3 +1,7 @@
+#!/usr/bin/env python
+import rospy
+from std_msgs.msg import String
+
 # import the necessary packages
 from scipy.spatial import distance as dist
 from imutils import perspective
@@ -6,7 +10,6 @@ import numpy as np
 import argparse
 import imutils
 import cv2
-
 
 def take_picture():
     cam = cv2.VideoCapture(2) # camport = 2 for juno
@@ -20,7 +23,6 @@ def take_picture():
     # If captured image is corrupted, moving to else part
     else:
         print("No image detected. Please! try again")
-    
 
 def image_preprocessing(image):
     
@@ -67,7 +69,7 @@ def get_size(ori_img, prep_img,width):
         # box
         box = perspective.order_points(box)
         cv2.drawContours(orig, [box.astype("int")], -1, (0, 255, 0), 2)
-
+        
         # list to store width
         item_width = []
 
@@ -144,19 +146,23 @@ def append_to_file(file_name, text_to_append):
         file_object.writelines(lines)
 
 def main():
-
+    
     # Take picture using juno camera
     ori_img = take_picture()
-    width = 5
+
+    # width of reference obj
+    width = 5.0
+
     # Pre-process Image 
     prep_img = image_preprocessing(ori_img)
 
     # Perform size estimation
-    output = get_size(ori_img, prep_img, width)
+    output = get_size(ori_img, prep_img, width) 
     
     # Get width and append to file
-    grocerylist = '/home/mustar/mad_fyp/FYP-grocery-classification-and-arrangement/grocery-size-estimation/size.txt'
+    grocerylist = '/home/mustar/catkin_ws/src/mad_fyp/src/size.txt'
     append_to_file(grocerylist,output)
 
 if __name__=="__main__":
     main()
+
