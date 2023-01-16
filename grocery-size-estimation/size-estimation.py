@@ -49,6 +49,9 @@ def get_size(ori_img, prep_img,width):
 
     pixelsPerMetric = None # 'pixels per metric' calibration variable
 
+    # list to store width
+    item_width = []
+
     # loop over the contours individually
     for c in cnts:
         # if the contour is not sufficiently large, ignore it
@@ -68,8 +71,6 @@ def get_size(ori_img, prep_img,width):
         box = perspective.order_points(box)
         cv2.drawContours(orig, [box.astype("int")], -1, (0, 255, 0), 2)
 
-        # list to store width
-        item_width = []
 
         # loop over the original points and draw them
         for (x, y) in box:
