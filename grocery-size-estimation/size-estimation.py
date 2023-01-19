@@ -126,7 +126,7 @@ def get_size(ori_img, prep_img,width):
             0.65, (255, 255, 255), 2)
 
         cv2.imshow("Image",orig)
-        cv2.waitKey(1000)
+        cv2.waitKey(0)
    
     return item_width[0]
 
