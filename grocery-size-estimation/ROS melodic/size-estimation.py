@@ -53,6 +53,7 @@ def get_size(ori_img, prep_img,width):
 
     # list to store width
     item_width = []
+    item_height= []
 
     # loop over the contours individually
     for c in cnts:
@@ -73,6 +74,7 @@ def get_size(ori_img, prep_img,width):
         box = perspective.order_points(box)
         cv2.drawContours(orig, [box.astype("int")], -1, (0, 255, 0), 2)
         
+
         # loop over the original points and draw them
         for (x, y) in box:
             cv2.circle(orig, (int(x), int(y)), 5, (0, 0, 255), -1)
@@ -113,11 +115,12 @@ def get_size(ori_img, prep_img,width):
         dimA = round((dA / pixelsPerMetric),1)
         dimB = round((dB / pixelsPerMetric),1)
         
+        item_height.append(dimA)
         item_width.append(dimB)
 
         print("Height:" , dimA)
         print("Width:" , dimB)  
-
+       
     # draw the object sizes on the image
         cv2.putText(orig, "H: {:.1f}cm".format(dimA),
             (int(tltrX - 15), int(tltrY - 10)), cv2.FONT_HERSHEY_SIMPLEX,
@@ -127,18 +130,20 @@ def get_size(ori_img, prep_img,width):
             0.65, (255, 255, 255), 2)
 
         cv2.imshow("Image",orig)
-        cv2.waitKey(1000)
+        #cv2.waitKey(1000)
+        cv2.waitKey(0)
    
-    return item_width[0]
+    # add exception
+    return item_height[1],item_width[1]
 
-def append_to_file(file_name, text_to_append):
+def append_to_file(file_name, height, width):
     # Open the file in append mode
     with open(file_name, "r") as file_object:
     # Read the contents of the file into a list of lines
         lines = file_object.readlines()
 
     # Modify the last line of the file
-    lines[-1] = lines[-1] + ":" + str(text_to_append)
+    lines[-1] = lines[-1] + ":" + str(height) + ":" + str(width) 
 
     # Open the file in write mode
     with open(file_name, "w") as file_object:
@@ -151,17 +156,17 @@ def main():
     ori_img = take_picture()
 
     # width of reference obj
-    width = 5.0
+    ref_width = 5.0
 
     # Pre-process Image 
     prep_img = image_preprocessing(ori_img)
 
     # Perform size estimation
-    output = get_size(ori_img, prep_img, width) 
+    height,width = get_size(ori_img, prep_img, ref_width) 
     
     # Get width and append to file
     grocerylist = '/home/mustar/catkin_ws/src/mad_fyp/src/size.txt'
-    append_to_file(grocerylist,output)
+    #append_to_file(grocerylist,height,width)
 
 if __name__=="__main__":
     main()
